@@ -1,0 +1,14 @@
+obstacle_range: 3.5
+raytrace_range: 4.0
+footprint: [[0.30,0.35],[0.30,-0.35],[-0.30,-0.35],[-0.62,-0.20],[-0.62,0.20],[-0.30,0.35]]
+#robot_radius: 0.25
+inflation_radius: 0.2
+cost_scaling_factor: 2.58 #2.58new, inversely proportional to the cost of a cell. higher means the decay curve more steep.
+                        #inflation_radius and cost_scaling_factor are better when inflation almost covers the corriders.
+
+observation_sources: laser_scanner
+#laser_scanner: {sensor_frame: base_link, data_type: LaserScan, topic: scan_unified, marking: true, clearing: true}
+#observation_sources: laser_scanner visionary_laser
+laser_scanner: {sensor_frame: laserfront, data_type: LaserScan, topic: sick_s300/scan_filtered, marking: true, clearing: true}
+#visionary_laser: {sensor_frame: camera_rotate, data_type: LaserScan, topic: sick_visionary_t_driver/laserscan, marking: true, clearing: false}
+
