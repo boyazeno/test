@@ -14,6 +14,7 @@ public:
     PointsPublisherServer(){
     	pub = nh.advertise<geometry_msgs::PointStamped>("/clicked_point", EDGE_OF_CIRCLE + 2);
         service = nh.advertiseService("points_publisher_server", &PointsPublisherServer::handle_function,this);
+        nh.param<std::string>("frame_id",frame_id,"base_link");
     }
     
     bool handle_function(test::Pointspub::Request &req, test::Pointspub::Response &res);
@@ -22,6 +23,7 @@ private:
     ros::NodeHandle nh;
     ros::Publisher pub;
     ros::ServiceServer service;
+    std::string frame_id;
 };
 
 
@@ -45,17 +47,17 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
                 geometry_msgs::PointStamped point;
             	point.header.seq = i;
             	point.header.stamp = ros::Time::now();
-            	point.header.frame_id = "odom";
+            	point.header.frame_id = frame_id;
             	point.point.x = req.center.x + radius*sin(i*2*PI/edge_num);
             	point.point.y = req.center.y + radius*cos(i*2*PI/edge_num);
             	point.point.z = 0;
             	pub.publish(point);
-            	ros::Duration(0.5).sleep();
+            	ros::Duration(0.1).sleep();
             }
             geometry_msgs::PointStamped middle_point;
             middle_point.header.seq = edge_num + 2;
             middle_point.header.stamp = ros::Time::now();
-            middle_point.header.frame_id = "odom";
+            middle_point.header.frame_id = frame_id;
             middle_point.point.x = req.center.x;
             middle_point.point.y = req.center.y;
             middle_point.point.z = 0;
@@ -78,7 +80,7 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
             point.point.z = 0;
             pub.publish(point);
             ROS_INFO("1 point published");
-            ros::Duration(0.5).sleep();
+            ros::Duration(0.1).sleep();
             //point upper left
             point.header.seq = 2;
             point.header.stamp = ros::Time::now();
@@ -86,7 +88,7 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
             point.point.y = req.center.y + width/2;
             pub.publish(point);
             ROS_INFO("2 point published");
-            ros::Duration(0.5).sleep();
+            ros::Duration(0.1).sleep();
             //point bottom left
             point.header.seq = 3;
             point.header.stamp = ros::Time::now();
@@ -94,7 +96,8 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
             point.point.y = req.center.y - width/2;
             pub.publish(point);
             ROS_INFO("3 point published");
-            ros::Duration(0.5).sleep();
+            
+            ros::Duration(0.1).sleep();
             //point bottom right
             point.header.seq = 4;
             point.header.stamp = ros::Time::now();
@@ -102,7 +105,7 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
             point.point.y = req.center.y - width/2;
             pub.publish(point);
             ROS_INFO("4 point published");
-            ros::Duration(0.5).sleep();
+            ros::Duration(0.1).sleep();
             //point upper right
             point.header.seq = 5;
             point.header.stamp = ros::Time::now();
@@ -110,7 +113,7 @@ bool PointsPublisherServer::handle_function(test::Pointspub::Request &req, test:
             point.point.y = req.center.y + width/2;
             pub.publish(point);
             ROS_INFO("5 point published");
-            ros::Duration(0.5).sleep();
+            ros::Duration(0.1).sleep();
             //middle point
             geometry_msgs::PointStamped middle_point;
             middle_point.header.seq = edge_num + 2;
